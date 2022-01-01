@@ -1,0 +1,189 @@
+// go basico https://www.youtube.com/watch?v=yyUHQIec83I
+// para iniciar un proyecto en go
+// $ go mod init example/hello
+// go: creating new go.mod: module example/hello
+
+package main
+
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
+
+var saludo = "Go conference"
+
+// pregutar por el nombre del usuario
+var bookinsSlice = []string{}
+
+// para crear una lista de objectos o una slice of maps tenemos que declarar el tipo de dato que va a contener
+var bookingLists = make([]map[string]string, 0)
+
+func main() {
+
+	// := es otra forma de declarar una variable inplicita solo para variagbles
+	// podemos pasar parametros a la función como en javascript
+	greetUsers()
+
+	const confereceTicket = 50
+	var remaningTickets uint = 50
+	// uint es un tipo de dato que solo puede tener valores positivos
+
+	fmt.Println("Bienvendios a su aplicacion de tickets")
+	fmt.Printf("Tenemos %v tickets en total para la conferencia aun tenemos %v tickets\n", confereceTicket, remaningTickets)
+
+	// var firstName string
+	// var userTickets int
+	// var bookins = [50]string{}
+	// para declarar una variable como array tenenmos de determinar el numero de elementos que trendra en array y el tipo de elementos que debera contener
+	//  y dentro de las llaves podemos añadir los valores que tendra el array
+	// los arrays son listas unicas de elementos, no se pueden combinar.
+
+	// para poder trabajar mas eficiemnte con los arrays tenemos que declarar una variable de tipo slice
+
+	// al inifinite for se le puede agragrar una condicion para que se detenga
+	// 	for remaningTickets > 0 { y tambien tienen && y ||
+	for {
+
+		// getUserInputs()
+		firstName, lastName, email, userTickets := getUserInputs()
+
+		fmt.Println("#############################################")
+		fmt.Println("#                Ticketera                  #")
+		fmt.Println("#############################################")
+		fmt.Println("#                                           #")
+		fmt.Println("Por favor ingrese su nombre")
+		fmt.Scan(&firstName)
+
+		fmt.Println("Por favor ingrese su apellido")
+		fmt.Scan(&lastName)
+		// cuando le asiganmos un apuntador a la variable se le pone & esto indica la posicion dentro de la memoria de este dato
+
+		fmt.Printf("Hola %v, ¿Cuantos tickets necesitas?\n", bookingLists[0]["firstName"])
+		fmt.Scan(&userTickets)
+
+		fmt.Println("Direccion de correo electronico")
+		fmt.Scan(&email)
+
+		// validateData function
+		isValidName, isValidEmail, isValidTickets := validateUserInputs(firstName, lastName, email, userTickets, remaningTickets)
+
+		if isValidName && isValidEmail && isValidTickets {
+
+			fmt.Printf("Su pedido ha sido procesado, enviaramos sus tickets al correo %v\n", email)
+			fmt.Printf("%v, has pedido %v tickets\n", firstName, userTickets)
+
+			remaningTickets = remaningTickets - userTickets
+			fmt.Printf("Aun tenemos %v tickets disponibles\n", remaningTickets)
+
+			// para poder almacenar elementos en un slice usamos append
+			bookinsSlice = append(bookinsSlice, firstName+" "+lastName)
+
+			// fmt.Printf("Primero elemento del slice: %v\n", bookinsSlice[0])
+			fmt.Printf("Tipo de slice: %T\n", bookinsSlice)
+			fmt.Printf("Tamaño del slice: %v\n", len(bookinsSlice))
+
+			fmt.Printf("estos son todos los ticketes que has pedido: %v\n", bookinsSlice)
+
+			// funcion para imprimir un slice
+			// names := printFristName(bookinsSlice)
+			fmt.Printf("Lista de resevaciones %v", bookingLists[0])
+
+			if remaningTickets == 0 {
+				fmt.Println("Lo sentimos, no hay tickets disponibles")
+				break
+			}
+
+		} else {
+
+			if !isValidName {
+				fmt.Println("Por favor ingrese un nombre valido")
+			}
+
+			if !isValidEmail {
+				fmt.Println("Por favor ingrese un correo valido")
+			}
+
+			if !isValidTickets {
+				fmt.Println("Por favor ingrese un numero de tickets valido")
+			}
+
+			// fmt.Println("Lo sentimos no hay suficientes tickets")
+			// fmt.Printf("Tenemos %v tickets disponibles\n", remaningTickets)
+			// fmt.Println("Por favor seleccione otro numero de tickets")
+			// continue
+			// continue es una palabra reservada que nos permite continuar con la ejecucion del codigo
+		}
+
+	}
+
+	city := "Mexico"
+
+	switch city {
+	case "Mexico", "Colombia":
+		// podemos agrupar varios casos en una sola linea
+
+		fmt.Println("Bienvenido a Mexico")
+
+	case "Argentina":
+		fmt.Println("Bienvenido a Argentina")
+
+	default:
+		fmt.Println("Lo sentimos no tenemos una conferencia en esta ciudad")
+
+	}
+
+	// en go solo existe un tipo de for que es el infinite loop
+
+}
+
+func greetUsers() {
+	// cuando pasamos un parametro a la funcion tenenmos que declarar el tipo de dato que tendra la variable
+	fmt.Printf("%v En este sitio encontraras toda la informacion de la conferencia\n", saludo)
+}
+
+func printFristName(bookinsSlice []string) []string {
+	// para poder retornar un valor de la funcion tenemos que declarar su tipo de dato
+
+	firstName := []string{}
+	for _, boobookinsSlice := range bookinsSlice {
+		// para ignorar una variable que no ocuparemos usamos el guion bajo
+		var names = strings.Fields(boobookinsSlice)
+		firstName = append(firstName, names[0])
+	}
+
+	return firstName
+}
+
+// esta funcion se separo en otro archivo
+// func validateUserInputs(firstName string, lastName string, email string, userTickets uint, remaningTickets uint) (bool, bool, bool) {
+// 	// input validation
+// 	// len() nos devuelve el numero de caracteres que tiene una cadena
+// 	isValidName := len(firstName) >= 2 && len(lastName) >= 2
+// 	isValidEmail := strings.Contains(email, "@")
+// 	isValidTickets := userTickets > 0 && userTickets <= remaningTickets
+
+// 	return isValidName, isValidEmail, isValidTickets
+// }
+
+func getUserInputs() (string, string, string, uint) {
+	var firstName string
+	var lastName string
+	var email string
+	var userTickets uint
+
+	// pra crear un map o objeto en go usamos la palabra reservada make
+	var userData = make(map[string]string)
+	userData["firstName"] = firstName
+	userData["lastName"] = lastName
+	userData["email"] = email
+	//  ya que los maps al igual que os arrays o slice no pueden contener valores de tipos diferentes cambiamos el unit (solo acpeta numeros positivos enteros)
+	// TODO revisar estar parte de strver y convertir numeros a strings
+	userData["userTickets"] = strconv.FormatUint(uint64(userTickets), 10)
+
+	// apped se refiere para agraegar elementos a un slice o array
+	bookingLists = append(bookingLists, userData)
+
+	return firstName, lastName, email, userTickets
+
+}
